@@ -1,13 +1,8 @@
+import PhoneItem from "@/app/_components/phone-item"
 import ServiceItem from "@/app/_components/service-item"
 import { Button } from "@/app/_components/ui/button"
 import { db } from "@/app/_lib/prisma"
-import {
-  ChevronLeftIcon,
-  MapIcon,
-  MapPinIcon,
-  MenuIcon,
-  StarIcon,
-} from "lucide-react"
+import { ChevronLeftIcon, MapPinIcon, MenuIcon, StarIcon } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -24,7 +19,7 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
     where: {
       id: params.id,
     },
-    // JOIN PARA PEGAR OS SERVIÇOS DE UMA BARBEARIO - RELATION ONE TO MANY
+    // JOIN PARA PEGAR OS SERVIÇOS DE UMA BARBEARIA - RELATION ONE TO MANY
     include: {
       services: true,
     },
@@ -33,7 +28,6 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
   if (!barbershop) {
     return notFound()
   }
-
   return (
     <div>
       {/* IMAGEM */}
@@ -65,7 +59,8 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
         </Button>
       </div>
 
-      <div className="border-b p-5">
+      {/* TÍTULO */}
+      <div className="border-b border-solid p-5">
         <h1 className="mb-3 text-xl font-bold">{barbershop?.name}</h1>
 
         <div className="mb-2 flex items-center gap-2">
@@ -85,13 +80,21 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
         <p className="text-justify text-sm">{barbershop?.description}</p>
       </div>
 
-      <div className="space-y-3 p-5">
+      {/* SERVIÇOS DA BARBEARIA */}
+      <div className="space-y-3 border-b border-solid p-5">
         <h2 className="text-xs font-bold uppercase text-gray-400">Serviços</h2>
         <div className="space-y-3">
           {barbershop.services.map((service) => (
             <ServiceItem key={service.id} service={service} />
           ))}
         </div>
+      </div>
+
+      {/* CONTATO */}
+      <div className="space-y-3 p-5">
+        {barbershop.phones.map((phone) => (
+          <PhoneItem key={phone} phone={phone} />
+        ))}
       </div>
     </div>
   )
