@@ -125,9 +125,9 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
         <div className="relative max-h-[110px] min-h-[110px] min-w-[110px] max-w-[110px]">
           <Image
             src={service.imageUrl}
-            alt={service.name}
             fill
             className="rounded-xl object-cover"
+            alt={service.name}
           />
         </div>
         {/* DIREITA */}

@@ -16,6 +16,7 @@ import {
 } from "./ui/dialog"
 import { signIn, signOut, useSession } from "next-auth/react"
 import { Avatar, AvatarImage } from "./ui/avatar"
+import SignInDialog from "./sign-in"
 
 const SidebarSheet = () => {
   const { data } = useSession()
@@ -50,28 +51,8 @@ const SidebarSheet = () => {
                   <LogInIcon />
                 </Button>
               </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Faça login na plataforma</DialogTitle>
-                  <DialogDescription>
-                    Conecte-se usando sua conta do Google.
-                  </DialogDescription>
-                </DialogHeader>
-
-                <Button
-                  variant="outline"
-                  className="gap-1 font-bold"
-                  onClick={handleLoginWithGoogleClick}
-                >
-                  <Image
-                    src="/google.svg"
-                    width={18}
-                    height={18}
-                    alt="Fazer login com o Google"
-                    className="text-white"
-                  />
-                  Google
-                </Button>
+              <DialogContent className="w-[90%]">
+                <SignInDialog />
               </DialogContent>
             </Dialog>
           </>
