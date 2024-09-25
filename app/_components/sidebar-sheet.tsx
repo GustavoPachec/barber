@@ -6,21 +6,13 @@ import { CalendarIcon, HomeIcon, LogInIcon, LogOutIcon } from "lucide-react"
 import { SheetClose, SheetContent, SheetHeader, SheetTitle } from "./ui/sheet"
 import { quickSearchOptions } from "../_constants/search"
 import Link from "next/link"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "./ui/dialog"
+import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog"
 import { signIn, signOut, useSession } from "next-auth/react"
 import { Avatar, AvatarImage } from "./ui/avatar"
 import SignInDialog from "./sign-in"
 
 const SidebarSheet = () => {
   const { data } = useSession()
-  const handleLoginWithGoogleClick = () => signIn("google")
   const handleLogoutClick = () => signOut()
 
   return (
@@ -30,8 +22,6 @@ const SidebarSheet = () => {
       </SheetHeader>
 
       <div className="flex items-center justify-between gap-3 border-b border-solid py-5">
-        <h2 className="font-bold">Olá faça seu login</h2>
-
         {data?.user ? (
           <div className="flex items-center gap-2">
             <Avatar>
@@ -45,6 +35,7 @@ const SidebarSheet = () => {
           </div>
         ) : (
           <>
+            <h2 className="font-bold">Olá, faça seu login!</h2>
             <Dialog>
               <DialogTrigger asChild>
                 <Button size="icon">
@@ -64,26 +55,28 @@ const SidebarSheet = () => {
           <Button className="justify-start gap-2" variant="ghost" asChild>
             <Link href="/">
               <HomeIcon size={18} />
-              Inicio
+              Início
             </Link>
           </Button>
         </SheetClose>
-        <Button className="justify-start gap-2" variant="ghost">
-          <CalendarIcon size={18} />
-          Agendamentos
+        <Button className="justify-start gap-2" variant="ghost" asChild>
+          <Link href="/bookings">
+            <CalendarIcon size={18} />
+            Agendamentos
+          </Link>
         </Button>
       </div>
 
       <div className="flex flex-col gap-2 border-b border-solid py-5">
         {quickSearchOptions.map((option) => (
           <SheetClose key={option.title} asChild>
-            <Button className="justify-start gap-2" variant="ghost">
+            <Button className="justify-start gap-2" variant="ghost" asChild>
               <Link href={`/barbershops?service=${option.title}`}>
                 <Image
+                  alt={option.title}
                   src={option.imageURL}
                   height={18}
                   width={18}
-                  alt={option.title}
                 />
                 {option.title}
               </Link>
@@ -92,16 +85,18 @@ const SidebarSheet = () => {
         ))}
       </div>
 
-      <div className="flex flex-col gap-2 py-5">
-        <Button
-          className="justify-start gap-2"
-          variant="ghost"
-          onClick={handleLogoutClick}
-        >
-          <LogOutIcon size={18} />
-          Sair da conta
-        </Button>
-      </div>
+      {data?.user && (
+        <div className="flex flex-col gap-2 py-5">
+          <Button
+            variant="ghost"
+            className="justify-start gap-2"
+            onClick={handleLogoutClick}
+          >
+            <LogOutIcon size={18} />
+            Sair da conta
+          </Button>
+        </div>
+      )}
     </SheetContent>
   )
 }

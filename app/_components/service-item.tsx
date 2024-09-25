@@ -14,13 +14,13 @@ import {
   SheetTrigger,
 } from "./ui/sheet"
 import { Calendar } from "./ui/calendar"
-import { ptBR } from "date-fns/locale"
 import { useEffect, useState } from "react"
-import { format, set, addDays } from "date-fns"
 import { useSession } from "next-auth/react"
 import { createBooking } from "../_actions/create-booking"
 import { toast } from "sonner"
 import { getBookings } from "../_actions/get-bookings"
+import { ptBR } from "date-fns/locale"
+import { addDays, format, set } from "date-fns"
 
 interface ServiceItemProps {
   service: BarbershopService
