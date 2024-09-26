@@ -21,6 +21,8 @@ import { toast } from "sonner"
 import { getBookings } from "../_actions/get-bookings"
 import { ptBR } from "date-fns/locale"
 import { addDays, format, isPast, isToday, set } from "date-fns"
+import BookingSummary from "./booking-summary"
+import { useRouter } from "next/navigation"
 
 interface ServiceItemProps {
   service: BarbershopService
@@ -77,6 +79,7 @@ const getTimeList = ({ bookings, selectedDay }: GetTimeListProps) => {
 }
 
 const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
+  const router = useRouter()
   const [signInDialogIsIpen, setSignInDialogIsOpen] = useState(false)
   const { data } = useSession()
   const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined)
@@ -123,7 +126,12 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
         date: newDate,
       })
 
-      toast.success("Reserva criada com sucesso!")
+      toast.success("Reserva criada com sucesso!", {
+        action: {
+          label: "Ver agendamentos",
+          onClick: () => router.push("/bookings"),
+        },
+      })
     } catch (error) {
       console.log(error)
       toast.error("Erro ao criar reserva!")
@@ -228,38 +236,14 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
 
                 {selectedTime && selectedDay && (
                   <div className="p-5">
-                    <Card>
-                      <CardContent className="space-y-3 p-3">
-                        <div className="flex items-center justify-between">
-                          <h2 className="font-bold">{service.name}</h2>
-                          <p className="text-sm font-bold">
-                            {Intl.NumberFormat("pt-BR", {
-                              style: "currency",
-                              currency: "BRL",
-                            }).format(Number(service.price))}
-                          </p>
-                        </div>
-
-                        <div className="flex items-center justify-between">
-                          <h2 className="font-sm text-gray-400">Data</h2>
-                          <p className="text-sm">
-                            {format(selectedDay, "d 'de' MMM", {
-                              locale: ptBR,
-                            })}
-                          </p>
-                        </div>
-
-                        <div className="flex items-center justify-between">
-                          <h2 className="font-sm text-gray-400">Horário</h2>
-                          <p className="text-sm">{selectedTime}</p>
-                        </div>
-
-                        <div className="flex items-center justify-between">
-                          <h2 className="font-sm text-gray-400">barbearia</h2>
-                          <p className="text-sm">{barbershop.name}</p>
-                        </div>
-                      </CardContent>
-                    </Card>
+                    <BookingSummary
+                      barbershop={barbershop}
+                      service={service}
+                      selectedDate={set(selectedDay, {
+                        hours: Number(selectedTime.split(":")[0]),
+                        minutes: Number(selectedTime.split(":")[1]),
+                      })}
+                    />
                   </div>
                 )}
                 <SheetFooter className="mt-5 px-5">
