@@ -15,7 +15,7 @@ import { authOptions } from "./_lib/auth"
 import { format } from "date-fns"
 import {} from "date-fns"
 import { ptBR } from "date-fns/locale"
-import getConfirmedBookings from "./_data/get-confirmed-booking"
+import { getConfirmedBookings } from "./_data/get-confirmed-booking"
 
 const Home = async () => {
   // chamar o banco de dados

@@ -1,4 +1,4 @@
-import { format, formatDate } from "date-fns"
+import { format } from "date-fns"
 import { Card, CardContent } from "./ui/card"
 import { Barbershop, BarbershopService } from "@prisma/client"
 import { ptBR } from "date-fns/locale"
@@ -28,21 +28,21 @@ const BookingSummary = ({
         </div>
 
         <div className="flex items-center justify-between">
-          <h2 className="font-sm text-gray-400">Data</h2>
+          <h2 className="text-sm text-gray-400">Data</h2>
           <p className="text-sm">
-            {format(selectedDate, "d 'de' MMM", {
+            {format(selectedDate, "d 'de' MMMM", {
               locale: ptBR,
             })}
           </p>
         </div>
 
         <div className="flex items-center justify-between">
-          <h2 className="font-sm text-gray-400">Horário</h2>
-          <p className="text-sm">{formatDate(selectedDate, "HH:mm")}</p>
+          <h2 className="text-sm text-gray-400">Horário</h2>
+          <p className="text-sm">{format(selectedDate, "HH:mm")}</p>
         </div>
 
         <div className="flex items-center justify-between">
-          <h2 className="font-sm text-gray-400">barbearia</h2>
+          <h2 className="text-sm text-gray-400">Barbearia</h2>
           <p className="text-sm">{barbershop.name}</p>
         </div>
       </CardContent>

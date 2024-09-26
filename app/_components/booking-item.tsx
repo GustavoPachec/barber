@@ -20,7 +20,6 @@ import PhoneItem from "./phone-item"
 import { Button } from "./ui/button"
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -28,12 +27,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog"
+import { DialogClose } from "@radix-ui/react-dialog"
 import { deleteBooking } from "../_actions/delete-booking"
 import { toast } from "sonner"
 import { useState } from "react"
 import BookingSummary from "./booking-summary"
 
-// TODO receber agendamento como prop
 interface BookingItemProps {
   booking: Prisma.BookingGetPayload<{
     include: {
@@ -46,6 +45,7 @@ interface BookingItemProps {
   }>
 }
 
+// TODO: receber agendamento como prop
 const BookingItem = ({ booking }: BookingItemProps) => {
   const [isSheetOpen, setIsSheetOpen] = useState(false)
   const {
@@ -55,14 +55,13 @@ const BookingItem = ({ booking }: BookingItemProps) => {
   const handleCancelBooking = async () => {
     try {
       await deleteBooking(booking.id)
-      toast.success("Reserva cancelada com sucesso!")
       setIsSheetOpen(false)
+      toast.success("Reserva cancelada com sucesso!")
     } catch (error) {
       console.error(error)
-      toast.error("Erro ao cancelar reserva, tente novamente!")
+      toast.error("Erro ao cancelar reserva. Tente novamente.")
     }
   }
-
   const handleSheetOpenChange = (isOpen: boolean) => {
     setIsSheetOpen(isOpen)
   }
@@ -91,7 +90,7 @@ const BookingItem = ({ booking }: BookingItemProps) => {
             {/* DIREITA */}
             <div className="flex flex-col items-center justify-center border-l-2 border-solid px-5">
               <p className="text-sm capitalize">
-                {format(booking.date, "MMM", { locale: ptBR })}
+                {format(booking.date, "MMMM", { locale: ptBR })}
               </p>
               <p className="text-2xl">
                 {format(booking.date, "dd", { locale: ptBR })}
@@ -110,10 +109,10 @@ const BookingItem = ({ booking }: BookingItemProps) => {
 
         <div className="relative mt-6 flex h-[180px] w-full items-end">
           <Image
-            src="./map.svg"
+            alt={`Mapa da barbearia ${booking.service.barbershop.name}`}
+            src="/map.png"
             fill
             className="rounded-xl object-cover"
-            alt={`Mapa da barbearia ${barbershop.imageUrl}`}
           />
 
           <Card className="z-50 mx-5 mb-3 w-full rounded-xl">
@@ -151,7 +150,6 @@ const BookingItem = ({ booking }: BookingItemProps) => {
             ))}
           </div>
         </div>
-
         <SheetFooter className="mt-6">
           <div className="flex items-center gap-3">
             <SheetClose asChild>
@@ -170,7 +168,8 @@ const BookingItem = ({ booking }: BookingItemProps) => {
                   <DialogHeader>
                     <DialogTitle>Você deseja cancelar sua reserva?</DialogTitle>
                     <DialogDescription>
-                      Esta não não pode estar desfeita após o cancelamento.
+                      Ao cancelar, você perderá sua reserva e não poderá
+                      recuperá-la. Essa ação é irreversível.
                     </DialogDescription>
                   </DialogHeader>
                   <DialogFooter className="flex flex-row gap-3">
