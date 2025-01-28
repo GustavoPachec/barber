@@ -33,7 +33,7 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
   return (
     <div>
       {/* IMAGEM */}
-      <div className="relative h-[250px] w-full">
+      <div className="relative h-[250px] w-full sm:h-[300px] md:h-[400px]">
         <Image
           alt={barbershop.name}
           src={barbershop?.imageUrl}
@@ -44,7 +44,7 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
         <Button
           size="icon"
           variant="secondary"
-          className="absolute left-4 top-4"
+          className="sm-top-6 absolute left-4 top-4 sm:left-6"
           asChild
         >
           <Link href="/">
@@ -67,8 +67,10 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
       </div>
 
       {/* TÍTULO */}
-      <div className="border-b border-solid p-5">
-        <h1 className="mb-3 text-xl font-bold">{barbershop.name}</h1>
+      <div className="border-b border-solid p-5 sm:p-6 md:p-8">
+        <h1 className="mb-3 text-xl font-bold sm:text-2xl">
+          {barbershop.name}
+        </h1>
         <div className="mb-2 flex items-center gap-2">
           <MapPinIcon className="text-primary" size={18} />
           <p className="text-sm">{barbershop?.address}</p>
@@ -81,15 +83,21 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
       </div>
 
       {/* DESCRIÇÃO */}
-      <div className="space-y-2 border-b border-solid p-5">
-        <h2 className="text-xs font-bold uppercase text-gray-400">Sobre nós</h2>
-        <p className="text-justify text-sm">{barbershop?.description}</p>
+      <div className="space-y-2 border-b border-solid p-5 sm:p-6 md:p-8">
+        <h2 className="text-xs font-bold uppercase text-gray-400 sm:text-sm">
+          Sobre nós
+        </h2>
+        <p className="text-justify text-sm sm:text-base">
+          {barbershop?.description}
+        </p>
       </div>
 
       {/* SERVIÇOS */}
-      <div className="space-y-3 border-b border-solid p-5">
-        <h2 className="text-xs font-bold uppercase text-gray-400">Serviços</h2>
-        <div className="space-y-3">
+      <div className="space-y-3 border-b border-solid p-5 sm:p-6 md:p-8">
+        <h2 className="text-xs font-bold uppercase text-gray-400 sm:text-sm">
+          Serviços
+        </h2>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {barbershop.services.map((service) => (
             <ServiceItem
               key={service.id}
@@ -101,7 +109,7 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
       </div>
 
       {/* CONTATO */}
-      <div className="space-y-3 p-5">
+      <div className="space-y-3 p-5 sm:p-6 md:p-8">
         {barbershop.phones.map((phone) => (
           <PhoneItem key={phone} phone={phone} />
         ))}

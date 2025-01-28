@@ -34,10 +34,10 @@ const Home = async () => {
       <Header />
       <div className="p-5">
         {/*TEXTO*/}
-        <h2 className="text-xl font-bold">
+        <h2 className="text-xl font-bold lg:text-center">
           Olá, {session?.user ? session.user.name : "Bem vindo"}
         </h2>
-        <p>
+        <p className="lg:text-center">
           <span className="capitalize">
             {format(new Date(), "EEEE, dd", { locale: ptBR })}
           </span>

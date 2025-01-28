@@ -166,7 +166,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
       <Card>
         <CardContent className="flex items-center gap-3 p-3">
           {/* IMAGE */}
-          <div className="relative max-h-[110px] min-h-[110px] min-w-[110px] max-w-[110px]">
+          <div className="relative max-h-[110px] min-h-[110px] min-w-[110px] max-w-[110px] sm:max-h-[130px] sm:min-h-[130px] sm:min-w-[130px] sm:max-w-[130px]">
             <Image
               alt={service.name}
               src={service.imageUrl}
@@ -175,12 +175,16 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
             />
           </div>
           {/* DIREITA */}
-          <div className="space-y-2">
-            <h3 className="text-sm font-semibold">{service.name}</h3>
-            <p className="text-sm text-gray-400">{service.description}</p>
+          <div className="space-y-2 sm:space-y-3">
+            <h3 className="text-sm font-semibold sm:text-base">
+              {service.name}
+            </h3>
+            <p className="text-sm text-gray-400 sm:text-base">
+              {service.description}
+            </p>
             {/* PREÇO E BOTÃO */}
-            <div className="flex items-center justify-between">
-              <p className="text-sm font-bold text-primary">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <p className="text-sm font-bold text-primary sm:text-base">
                 {Intl.NumberFormat("pt-BR", {
                   style: "currency",
                   currency: "BRL",
@@ -204,7 +208,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
                     <SheetTitle>Fazer Reserva</SheetTitle>
                   </SheetHeader>
 
-                  <div className="border-b border-solid py-5">
+                  <div className="sm-py-6 border-b border-solid py-5">
                     <Calendar
                       mode="single"
                       locale={ptBR}
@@ -238,7 +242,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
                   </div>
 
                   {selectedDay && (
-                    <div className="flex gap-3 overflow-x-auto border-b border-solid p-5 [&::-webkit-scrollbar]:hidden">
+                    <div className="flex gap-3 overflow-x-auto border-b border-solid p-5 sm:p-6 [&::-webkit-scrollbar]:hidden">
                       {timeList.length > 0 ? (
                         timeList.map((time) => (
                           <Button
@@ -261,7 +265,7 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
                   )}
 
                   {selectedDate && (
-                    <div className="p-5">
+                    <div className="sm-p-6 p-5">
                       <BookingSummary
                         barbershop={barbershop}
                         service={service}
@@ -269,10 +273,11 @@ const ServiceItem = ({ service, barbershop }: ServiceItemProps) => {
                       />
                     </div>
                   )}
-                  <SheetFooter className="mt-5 px-5">
+                  <SheetFooter className="mt-5 px-5 sm:px-6">
                     <Button
                       onClick={handleCreateBooking}
                       disabled={!selectedDay || !selectedTime}
+                      className="sm-w-auto w-full"
                     >
                       Confirmar
                     </Button>
