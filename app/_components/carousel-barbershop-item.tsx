@@ -27,7 +27,7 @@ export function CarouselBarbershopItem({
   const [count, setCount] = useState(0)
   const [isAutoplayPaused, setIsAutoplayPaused] = useState(false)
 
-  // Memoize the autoplay plugin to prevent unnecessary re-renders
+  // Memoriza o plugin de autoplay para evitar re-renderizações desnecessárias
   const autoplayPlugin = Autoplay({
     delay: 4000,
     stopOnInteraction: false,
@@ -49,7 +49,7 @@ export function CarouselBarbershopItem({
   useEffect(() => {
     if (!api) return
 
-    // Get the actual number of scroll snaps (pages/slides)
+    // Obtém o número real de snap points (páginas/slides)
     const scrollSnapList = api.scrollSnapList()
     setCount(scrollSnapList.length)
     setCurrent(api.selectedScrollSnap() + 1)
@@ -61,7 +61,7 @@ export function CarouselBarbershopItem({
     }
   }, [api, handleSelect])
 
-  // Recalculate dots when window resizes (screen size changes)
+  // Recalcula os pontos quando a janela é redimensionada (mudança de tamanho da tela)
   useEffect(() => {
     const handleResize = () => {
       if (api) {
@@ -74,7 +74,7 @@ export function CarouselBarbershopItem({
     return () => window.removeEventListener("resize", handleResize)
   }, [api])
 
-  // Early return for empty state
+  // Retorno antecipado para estado vazio
   if (!barbershops?.length) {
     return (
       <div className="flex items-center justify-center py-8 text-muted-foreground">
@@ -99,20 +99,20 @@ export function CarouselBarbershopItem({
         }}
         plugins={[autoplayPlugin]}
       >
-        <CarouselContent className="-ml-2 md:-ml-4">
+        <CarouselContent className="-ml-1 md:-ml-4">
           {barbershops.map((barbershop) => (
             <CarouselItem
               key={barbershop.id}
-              className="xl: m-1 basis-1/2 pl-2 lg:basis-1/3 xl:basis-1/5"
+              className="xl: m-1 basis-1/2 pl-1 lg:basis-1/3 xl:basis-1/5"
             >
-              <div className="p-2">
+              <div className="p-1 md:p-2">
                 <BarbershopItem barbershop={barbershop} />
               </div>
             </CarouselItem>
           ))}
         </CarouselContent>
 
-        {/* Navigation buttons - only show if there are multiple items */}
+        {/* Botões de navegação - só mostram se há múltiplos itens */}
         {count > 1 && (
           <>
             <CarouselPrevious className="left-2 top-1/2 hidden -translate-y-1/2 bg-primary shadow-md transition-colors hover:bg-primary/90 md:flex md:h-10 md:w-10 lg:h-12 lg:w-12" />
@@ -121,7 +121,7 @@ export function CarouselBarbershopItem({
         )}
       </Carousel>
 
-      {/* Indicator dots - only show if there are multiple items */}
+      {/* Pontos indicadores - só mostram se há múltiplos itens */}
       {count > 1 && (
         <div className="mt-4 flex justify-center gap-2">
           {Array.from({ length: count }).map((_, index) => (
