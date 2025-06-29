@@ -85,7 +85,6 @@ export function CarouselBarbershopItem({
 
   return (
     <div
-      className={`relative ${className || ""}`}
       onMouseEnter={() => setIsAutoplayPaused(true)}
       onMouseLeave={() => setIsAutoplayPaused(false)}
     >
@@ -101,13 +100,8 @@ export function CarouselBarbershopItem({
       >
         <CarouselContent className="-ml-1 md:-ml-4">
           {barbershops.map((barbershop) => (
-            <CarouselItem
-              key={barbershop.id}
-              className="xl: m-1 basis-1/2 pl-1 lg:basis-1/3 xl:basis-1/5"
-            >
-              <div className="p-1 md:p-2">
-                <BarbershopItem barbershop={barbershop} />
-              </div>
+            <CarouselItem key={barbershop.id} className={className}>
+              <BarbershopItem barbershop={barbershop} />
             </CarouselItem>
           ))}
         </CarouselContent>

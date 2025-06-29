@@ -26,67 +26,80 @@ const Home = async () => {
     <div>
       {/*HEADER*/}
       <Header />
-      <div className="mx-auto px-3 py-5 lg:p-5">
-        {/*TEXTO BOAS VINDAS*/}
-        <h2 className="text-center text-lg font-bold lg:text-xl">
-          Olá, {session?.user ? session.user.name : "Bem vindo"}
-        </h2>
-        <p className="text-center text-sm lg:text-base">
-          <span className="capitalize">
-            {format(new Date(), "EEEE, dd", { locale: ptBR })}
-          </span>
-          <span>&nbsp;de&nbsp;</span>
-          <span className="capitalize">
-            {format(new Date(), "MMMM", { locale: ptBR })}
-          </span>
-        </p>
-        {/* BUSCA */}
-        <div className="mt-4 lg:mt-6">
-          <Search />
-        </div>
-
-        {/* BUSCA RÁPIDA */}
-        <div>
-          <QuickSearch />
-        </div>
-
-        {/* IMAGEM */}
-        <div className="relative mt-4 h-[120px] w-full lg:mt-6 lg:h-[200px] xl:h-[280px]">
-          <Image
-            src="/banner01.png"
-            fill
-            className="rounded-xl object-cover"
-            alt="Agende nos melhores com FSW Barber"
-            sizes="(max-width: 640px) 100vw, 700px"
-          />
-        </div>
-
-        {/* AGENDAMENTOS */}
-        {confirmedBookings.length > 0 && (
-          <>
-            <h2 className="mb-2 mt-4 text-xs font-bold uppercase text-gray-400 lg:mb-3 lg:mt-6">
-              Agendamentos
-            </h2>
-            <div className="flex gap-2 overflow-x-auto lg:gap-3 [&::-webkit-scrollbar]:hidden">
-              {confirmedBookings.map((booking) => (
-                <BookingItem key={booking.id} booking={booking} />
-              ))}
+      <div className="mx-auto max-w-7xl px-3 py-5 lg:p-8">
+        <div className="flex min-h-[340px] flex-col gap-8 lg:flex-row xl:min-h-[260px] xl:gap-16">
+          {/* Esquerda */}
+          <div className="flex w-full flex-col justify-between lg:w-2/5 xl:w-2/3">
+            <div>
+              <h2 className="text-lg font-bold md:text-center lg:text-left xl:text-2xl">
+                Olá, {session?.user ? session.user.name : "Bem vindo"}
+              </h2>
+              <p className="text-sm sm:text-left md:text-center lg:text-left xl:text-base">
+                <span className="capitalize">
+                  {format(new Date(), "EEEE, dd", { locale: ptBR })}
+                </span>
+                <span>&nbsp;de&nbsp;</span>
+                <span className="capitalize">
+                  {format(new Date(), "MMMM", { locale: ptBR })}
+                </span>
+              </p>
+              {/* BUSCA */}
+              <div className="mt-11 xl:mt-8">
+                <Search />
+              </div>
+              {/* BUSCA RAPIDA */}
+              <div className="mt-2 lg:hidden xl:mt-4">
+                <QuickSearch />
+              </div>
             </div>
-          </>
-        )}
-
-        <h2 className="mb-2 mt-4 text-xs font-bold uppercase text-gray-400 lg:mb-3 lg:mt-6">
-          Recomendados
-        </h2>
-        <div className="w-full">
-          <CarouselBarbershopItem barbershops={barbershops} />
+            {/* Banner */}
+            <div className="relative mt-6 flex h-[120px] w-full items-end md:hidden lg:hidden xl:mt-0 xl:hidden xl:h-[180px] 2xl:hidden">
+              <Image
+                src="/banner01.png"
+                fill
+                className="rounded-xl object-cover"
+                alt="Agende nos melhores com FSW Barber"
+                sizes="(max-width: 640px) 100vw, 350px"
+              />
+            </div>
+            {/* AGENDAMENTOS */}
+            {confirmedBookings.length > 0 && (
+              <div className="mt-6 xl:mt-10">
+                <h2 className="mb-2 text-xs font-bold uppercase text-gray-400 xl:mb-3">
+                  Agendamentos
+                </h2>
+                <div className="flex gap-2 overflow-x-auto xl:gap-3 [&::-webkit-scrollbar]:hidden">
+                  {confirmedBookings.map((booking) => (
+                    <BookingItem key={booking.id} booking={booking} />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+          {/* Direita */}
+          <div className="flex w-full flex-col justify-end lg:w-3/5 xl:w-2/3 xl:pl-12">
+            <h2 className="mb-2 mt-0 text-xs font-bold uppercase text-gray-400 xl:mb-3">
+              Recomendados
+            </h2>
+            <div className="flex h-full w-full flex-col justify-end">
+              <CarouselBarbershopItem
+                barbershops={barbershops}
+                className="basis-auto sm:w-1/3 lg:basis-1/2 xl:basis-1/3"
+              />
+            </div>
+          </div>
         </div>
-
-        <h2 className="mb-2 mt-4 text-xs font-bold uppercase text-gray-400 lg:mb-3 lg:mt-6">
-          Populares
-        </h2>
-        <div className="w-full">
-          <CarouselBarbershopItem barbershops={popularBarbershops} />
+        {/* Populares */}
+        <div className="mt-12 xl:mt-20">
+          <h2 className="mb-2 mt-4 px-1 text-xs font-bold uppercase text-gray-400 xl:mb-3 xl:mt-6">
+            Populares
+          </h2>
+          <div className="w-full">
+            <CarouselBarbershopItem
+              barbershops={popularBarbershops}
+              className="basis-auto sm:w-1/3 xl:basis-1/5"
+            />
+          </div>
         </div>
       </div>
     </div>
