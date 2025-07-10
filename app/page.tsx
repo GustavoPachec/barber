@@ -109,10 +109,24 @@ const Home = async () => {
             Mais Visitadas
           </h2>
           <div className="w-full">
-            <CarouselBarbershopItem
-              barbershops={mostVisitedBarbershop}
-              className="basis-auto sm:w-1/3 xl:basis-1/5"
-            />
+            {!session?.user ? (
+              <div className="flex h-64 items-center justify-center">
+                <p className="text-gray-500">
+                  Faça login para ver as barbearias mais visitadas.
+                </p>
+              </div>
+            ) : mostVisitedBarbershop.length > 0 ? (
+              <CarouselBarbershopItem
+                barbershops={mostVisitedBarbershop}
+                className="basis-auto sm:w-1/3 xl:basis-1/5"
+              />
+            ) : (
+              <div className="flex h-64 items-center justify-center">
+                <p className="text-gray-500">
+                  Você ainda não visitou nenhuma barbearia.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
