@@ -10,6 +10,7 @@ import { ptBR } from "date-fns/locale"
 import { getConfirmedBookings } from "./_data/get-confirmed-booking"
 import { CarouselBarbershopItem } from "./_components/carousel-barbershop-item"
 import QuickSearch from "./_components/quick-search"
+import { mostVisitedBarbershops } from "./_actions/most-visited"
 
 const Home = async () => {
   // chamar o banco de dados
@@ -21,6 +22,7 @@ const Home = async () => {
     },
   })
   const confirmedBookings = await getConfirmedBookings()
+  const mostVisitedBarbershop = await mostVisitedBarbershops()
 
   return (
     <div>
@@ -97,6 +99,18 @@ const Home = async () => {
           <div className="w-full">
             <CarouselBarbershopItem
               barbershops={popularBarbershops}
+              className="basis-auto sm:w-1/3 xl:basis-1/5"
+            />
+          </div>
+        </div>
+        {/* MAIS VISITADAS*/}
+        <div className="mt-12 xl:mt-20">
+          <h2 className="mb-2 mt-4 px-1 text-xs font-bold uppercase text-gray-400 xl:mb-3 xl:mt-6">
+            Mais Visitadas
+          </h2>
+          <div className="w-full">
+            <CarouselBarbershopItem
+              barbershops={mostVisitedBarbershop}
               className="basis-auto sm:w-1/3 xl:basis-1/5"
             />
           </div>
