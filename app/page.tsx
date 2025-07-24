@@ -46,7 +46,7 @@ const Home = async () => {
                 </span>
               </p>
               {/* BUSCA */}
-              <div className="mt-11 xl:mt-8">
+              <div className="mt-6 sm:mt-8 xl:mt-8">
                 <Search />
               </div>
               {/* BUSCA RAPIDA */}
@@ -91,40 +91,41 @@ const Home = async () => {
             </div>
           </div>
         </div>
+
         {/* Populares */}
-        <div className="mt-12 xl:mt-20">
+        <div className="mt-8 sm:mt-12 xl:mt-20">
           <h2 className="mb-2 mt-4 px-1 text-xs font-bold uppercase text-gray-400 xl:mb-3 xl:mt-6">
             Populares
           </h2>
           <div className="w-full">
             <CarouselBarbershopItem
               barbershops={popularBarbershops}
-              className="basis-auto sm:w-1/3 xl:basis-1/5"
+              className="basis-auto sm:w-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/5"
             />
           </div>
         </div>
+
         {/* MAIS VISITADAS*/}
-        <div className="mt-12 xl:mt-20">
+        <div className="mt-8 sm:mt-12 xl:mt-20">
           <h2 className="mb-2 mt-4 px-1 text-xs font-bold uppercase text-gray-400 xl:mb-3 xl:mt-6">
             Mais Visitadas
           </h2>
           <div className="w-full">
-            {!session?.user ? (
-              <div className="flex h-64 items-center justify-center">
-                <p className="text-gray-500">
-                  Faça login para ver as barbearias mais visitadas.
-                </p>
-              </div>
-            ) : mostVisitedBarbershop.length > 0 ? (
+            {mostVisitedBarbershop.length > 0 ? (
               <CarouselBarbershopItem
                 barbershops={mostVisitedBarbershop}
-                className="basis-auto sm:w-1/3 xl:basis-1/5"
+                className="basis-auto sm:w-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/5"
               />
             ) : (
-              <div className="flex h-64 items-center justify-center">
-                <p className="text-gray-500">
-                  Você ainda não visitou nenhuma barbearia.
-                </p>
+              <div className="flex h-32 items-center justify-center rounded-lg bg-gray-50 sm:h-40 md:h-48 lg:h-56 xl:h-64">
+                <div className="px-4 text-center">
+                  <p className="text-sm text-gray-500 sm:text-base">
+                    Nenhuma barbearia visitada ainda.
+                  </p>
+                  <p className="mt-1 text-xs text-gray-400 sm:text-sm">
+                    Faça seu primeiro agendamento para ver suas favoritas!
+                  </p>
+                </div>
               </div>
             )}
           </div>

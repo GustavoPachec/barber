@@ -25,9 +25,7 @@ export function CarouselBarbershopItem({
   const [api, setApi] = useState<CarouselApi | null>(null)
   const [current, setCurrent] = useState(0)
   const [count, setCount] = useState(0)
-  const [isAutoplayPaused, setIsAutoplayPaused] = useState(false)
 
-  // Memoriza o plugin de autoplay para evitar re-renderizações desnecessárias
   const autoplayPlugin = Autoplay({
     delay: 4000,
     stopOnInteraction: false,
@@ -35,8 +33,9 @@ export function CarouselBarbershopItem({
   })
 
   const handleSelect = useCallback(() => {
-    if (!api) return
-    setCurrent(api.selectedScrollSnap() + 1)
+    if (api) {
+      setCurrent(api.selectedScrollSnap() + 1)
+    }
   }, [api])
 
   const handleDotClick = useCallback(
@@ -49,11 +48,8 @@ export function CarouselBarbershopItem({
   useEffect(() => {
     if (!api) return
 
-    // Obtém o número real de snap points (páginas/slides)
-    const scrollSnapList = api.scrollSnapList()
-    setCount(scrollSnapList.length)
+    setCount(api.scrollSnapList().length)
     setCurrent(api.selectedScrollSnap() + 1)
-
     api.on("select", handleSelect)
 
     return () => {
@@ -61,12 +57,10 @@ export function CarouselBarbershopItem({
     }
   }, [api, handleSelect])
 
-  // Recalcula os pontos quando a janela é redimensionada (mudança de tamanho da tela)
   useEffect(() => {
     const handleResize = () => {
       if (api) {
-        const scrollSnapList = api.scrollSnapList()
-        setCount(scrollSnapList.length)
+        setCount(api.scrollSnapList().length)
       }
     }
 
@@ -74,20 +68,18 @@ export function CarouselBarbershopItem({
     return () => window.removeEventListener("resize", handleResize)
   }, [api])
 
-  // Retorno antecipado para estado vazio
   if (!barbershops?.length) {
     return (
-      <div className="flex items-center justify-center py-8 text-muted-foreground">
-        <p>Nenhuma barbearia encontrada</p>
+      <div className="flex items-center justify-center px-4 py-8 text-center">
+        <p className="text-sm text-muted-foreground sm:text-base">
+          Nenhuma barbearia encontrada
+        </p>
       </div>
     )
   }
 
   return (
-    <div
-      onMouseEnter={() => setIsAutoplayPaused(true)}
-      onMouseLeave={() => setIsAutoplayPaused(false)}
-    >
+    <div className="group relative w-full">
       <Carousel
         setApi={setApi}
         opts={{
@@ -97,38 +89,49 @@ export function CarouselBarbershopItem({
           dragFree: false,
         }}
         plugins={[autoplayPlugin]}
+        className="w-full"
       >
-        <CarouselContent className="-ml-1 md:-ml-4">
+        <CarouselContent className="-ml-1 sm:-ml-2 md:-ml-3 lg:-ml-4">
           {barbershops.map((barbershop) => (
-            <CarouselItem key={barbershop.id} className={className}>
+            <CarouselItem
+              key={barbershop.id}
+              className={`pl-1 sm:pl-2 md:pl-3 lg:pl-4 ${className ?? ""}`}
+            >
               <BarbershopItem barbershop={barbershop} />
             </CarouselItem>
           ))}
         </CarouselContent>
 
-        {/* Botões de navegação - só mostram se há múltiplos itens */}
+        {/* Setas - apenas em telas maiores, aparecem no hover */}
         {count > 1 && (
           <>
-            <CarouselPrevious className="left-2 top-1/2 hidden -translate-y-1/2 bg-primary shadow-md transition-colors hover:bg-primary/90 md:flex md:h-10 md:w-10 lg:h-12 lg:w-12" />
-            <CarouselNext className="right-2 top-1/2 hidden -translate-y-1/2 bg-primary shadow-md transition-colors hover:bg-primary/90 md:flex md:h-10 md:w-10 lg:h-12 lg:w-12" />
+            <CarouselPrevious
+              aria-label="Voltar slide"
+              className="absolute left-[-12px] top-1/2 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-md transition hover:scale-105 hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 sm:left-[-16px] sm:flex md:left-[-20px] lg:left-[-24px]"
+            />
+
+            <CarouselNext
+              aria-label="Avançar slide"
+              className="absolute right-[-12px] top-1/2 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-md transition hover:scale-105 hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 sm:right-[-16px] sm:flex md:right-[-20px] lg:right-[-24px]"
+            />
           </>
         )}
       </Carousel>
 
-      {/* Pontos indicadores - só mostram se há múltiplos itens */}
+      {/* Indicadores */}
       {count > 1 && (
         <div className="mt-4 flex justify-center gap-2">
           {Array.from({ length: count }).map((_, index) => (
             <button
               key={index}
-              className={`h-2 w-2 rounded-full transition-all duration-200 hover:scale-110 ${
+              onClick={() => handleDotClick(index)}
+              aria-label={`Ir para slide ${index + 1}`}
+              aria-current={current === index + 1 ? "true" : "false"}
+              className={`h-2 w-2 rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
                 current === index + 1
                   ? "scale-110 bg-primary"
-                  : "bg-gray-300 hover:bg-gray-400"
+                  : "bg-muted hover:bg-muted-foreground"
               }`}
-              onClick={() => handleDotClick(index)}
-              aria-label={`Ir para slide ${index + 1} de ${count}`}
-              aria-current={current === index + 1 ? "true" : "false"}
             />
           ))}
         </div>
