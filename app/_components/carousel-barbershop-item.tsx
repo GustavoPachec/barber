@@ -25,6 +25,7 @@ export function CarouselBarbershopItem({
   const [api, setApi] = useState<CarouselApi | null>(null)
   const [current, setCurrent] = useState(0)
   const [count, setCount] = useState(0)
+  const [visibleItems, setVisibleItems] = useState(1) // Estado para itens visíveis
 
   const autoplayPlugin = Autoplay({
     delay: 4000,
@@ -45,6 +46,22 @@ export function CarouselBarbershopItem({
     [api],
   )
 
+  // Atualiza o número de itens visíveis com base no tamanho da tela
+  const updateVisibleItems = useCallback(() => {
+    const width = window.innerWidth
+    if (width >= 1024) {
+      setVisibleItems(3) // lg: 3 itens visíveis
+    } else if (width >= 768) {
+      setVisibleItems(3) // md: 3 itens visíveis
+    } else if (width >= 640) {
+      setVisibleItems(2) // sm: 2 itens visíveis
+    } else if (width >= 475) {
+      setVisibleItems(1) // xs: 1 item visível
+    } else {
+      setVisibleItems(1) // Menor que xs: 1 item visível
+    }
+  }, [])
+
   useEffect(() => {
     if (!api) return
 
@@ -58,15 +75,17 @@ export function CarouselBarbershopItem({
   }, [api, handleSelect])
 
   useEffect(() => {
+    updateVisibleItems() // Define itens visíveis inicialmente
     const handleResize = () => {
       if (api) {
         setCount(api.scrollSnapList().length)
       }
+      updateVisibleItems() // Atualiza itens visíveis no redimensionamento
     }
 
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
-  }, [api])
+  }, [api, updateVisibleItems])
 
   if (!barbershops?.length) {
     return (
@@ -102,8 +121,8 @@ export function CarouselBarbershopItem({
           ))}
         </CarouselContent>
 
-        {/* Setas - apenas em telas maiores, aparecem no hover */}
-        {count > 1 && (
+        {/* Setas de navegação */}
+        {count > visibleItems && (
           <>
             <CarouselPrevious
               aria-label="Voltar slide"
@@ -112,14 +131,14 @@ export function CarouselBarbershopItem({
 
             <CarouselNext
               aria-label="Avançar slide"
-              className="absolute right-[-12px] top-1/2 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-md transition hover:scale-105 hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 sm:right-[-16px] sm:flex md:right-[-20px] lg:right-[-24px]"
+              className="absolute right-2 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-md transition hover:scale-105 hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             />
           </>
         )}
       </Carousel>
 
-      {/* Indicadores */}
-      {count > 1 && (
+      {/* Indicadores (bolinhas) */}
+      {count > visibleItems && (
         <div className="mt-4 flex justify-center gap-2">
           {Array.from({ length: count }).map((_, index) => (
             <button
